@@ -1,0 +1,14 @@
+{
+  "include": ["src"],
+  "exclude": ["dist", "node_modules", "**/__tests__/*", "**/*.test.ts"],
+  "compilerOptions": {
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "target": "ES2020",
+
+    "moduleResolution": "node",
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
+    "declaration": true,
+    "emitDeclarationOnly": true
+  }
+}
