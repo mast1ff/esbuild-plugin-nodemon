@@ -1,7 +1,7 @@
 {
   "name": "esbuild-plugin-nodemon",
   "description": "A esbuild plugin to run scripts using Nodemon",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "mast1ff <https://github.com/mast1ff>",
   "repository": {
     "type": "git",
