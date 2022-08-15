@@ -15,13 +15,15 @@ esbuild
     platform: "node",
     bundle: true,
     write: true,
+    sourcemap: true,
     loader: {
       ".ts": "ts",
     },
     plugins: [nodemonPlugin()],
     watch: true,
   })
-  .then(() => {
+  .then((res) => {
+    console.log(JSON.stringify(res));
     process.exit(0);
   })
   .catch((err) => {

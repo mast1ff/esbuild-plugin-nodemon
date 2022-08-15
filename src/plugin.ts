@@ -1,4 +1,4 @@
-import type { Plugin } from "esbuild";
+import type { Plugin, OutputFile } from "esbuild";
 import type { Settings } from "nodemon";
 import nodemon from "nodemon";
 import * as fs from "fs-extra";
@@ -53,13 +53,25 @@ export function esbuildNodemonPlugin(
           error = result.errors.map((err) => String(err.detail)).join("\n");
         }
 
-        if (!result.outputFiles) return;
-        const output = result.outputFiles[0];
+        if (!result.outputFiles || result.outputFiles.length === 0) return;
+
+        let output: OutputFile | null = null;
+        for (const o of result.outputFiles) {
+          if (!o.path.endsWith(".js")) {
+            continue;
+          }
+          output = o;
+        }
+
+        if (!output) {
+          writeBuild(result.outputFiles);
+          return;
+        }
+
         const entryPoint = output.path;
 
         try {
-          fs.ensureDirSync(path.dirname(output.path));
-          fs.writeFileSync(output.path, output.contents, "utf-8");
+          writeBuild(result.outputFiles);
         } catch (e: any) {
           error = e?.message;
         }
@@ -77,4 +89,11 @@ export function esbuildNodemonPlugin(
       });
     },
   };
+}
+
+function writeBuild(outputFiles: OutputFile[]) {
+  for (const output of outputFiles) {
+    fs.ensureDirSync(path.dirname(output.path));
+    fs.writeFileSync(output.path, output.contents, "utf-8");
+  }
 }
